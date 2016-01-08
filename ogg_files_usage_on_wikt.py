@@ -13,8 +13,8 @@ import math
 EXTENSION = u".ogg"
 PREFIX = u"File:Fr-"
 PARIS = u"Paris--"
-TEMPLATE = u"{{écouter|"
-
+TEMPLATE = u"{{écouter"
+	     
 siteWiktionary = pywikibot.Site(u'fr', u'wiktionary')
 siteWiktionary.login()
 
@@ -23,14 +23,14 @@ siteCommons.login()
 
 topCategoryName = u"Category:French pronunciation"
 
-result = u"La liste ci-dessous regroupe les fichiers .ogg existants sur WikiCommons mais non repris sur les articles du Wiktionnaire correspondant. Ils sont tous issus de l'arborescence [[:Commons:" + topCategoryName + "]]. Si vous utilisez un fichier .ogg dans son article, merci de barrer la ligne correspondante ci-dessous.\n\n"
+result = u"La liste ci-dessous regroupe les fichiers .ogg existants sur WikiCommons mais non repris sur les articles du Wiktionnaire correspondants. Ils sont tous issus de l'arborescence [[:Commons:" + topCategoryName + "]]. Si vous utilisez un fichier .ogg dans son article, merci de barrer la ligne correspondante ci-dessous.\n\n"
 
 wordsDone = []
 
 #
 # recursiveMethod
 #
-def recursiveMethod(topCategoryName, result):
+def recursiveMethod(topCategoryName, result, count):
 
 	category = pywikibot.Category(siteCommons, topCategoryName)
 	print "this category is analysed..." + topCategoryName
@@ -54,19 +54,36 @@ def recursiveMethod(topCategoryName, result):
 			ready = False
 
 		if ready == True:
-
-			word = titleBis[len(PREFIX):ext]
 			
-			wikt = pywikibot.Page(siteWiktionary, word)
+			print str(count)
 
+			# General case
+			word = titleBis[len(PREFIX):ext]
+			word = word.replace (u"‐", "-")
+			print word
+
+			# Marginal case in the goal to manage "à-propos" => "à propos"
+			wordBis = word.replace ("-", " ")
+			print wordBis
+
+			wikt = pywikibot.Page(siteWiktionary, word)
+			wiktBis = pywikibot.Page(siteWiktionary, wordBis)
+			
+			# if "à-propos" does not exist we try "à propos"
+			if len(wikt.text) == 0:
+				wikt = wiktBis	
+				word = wordBis
+			
 			# existence test of the correspondent article (red link or not)
 			if len(wikt.text) > 0:   
 
-				# test if the template is already used or not ("audio=" should be tested here => improvement)
-				if wikt.text.find(TEMPLATE) < 0: 
-					try:
+				# test if the template is already used or not
+				#templates = siteWiktionary.pagetemplates(wikt, namespaces=None, step=None, total=None, content=False)
+				if wikt.text.find(TEMPLATE) < 0:			
+ 					try:
     						val=wordsDone.index(word)
 					except ValueError:
+						count = count + 1 
    						wordsDone.append(word)
 						print ("***** template is non used ***** : " + word)
 						result += "# [[" + word + "]] : " + "[[:Commons:" + title + "|" + title + "]]" + "\n" 
@@ -77,17 +94,21 @@ def recursiveMethod(topCategoryName, result):
 		else:
 			print ("we ignore this file : " + title)
 
+		print " "		
+		print "*********"
+
 	categories = pagegenerators.SubCategoriesPageGenerator(category, recurse=False)
 	for cat in categories:
-		result = recursiveMethod(cat.title(), result)		
+		result = recursiveMethod(cat.title(), result, count)		
 
 	return result	
 	
 #
-# Principal
+# Main
 #
 
-result = recursiveMethod(topCategoryName, result)
+count = 0
+result = recursiveMethod(topCategoryName, result, count)
 page = pywikibot.Page(siteWiktionary, u"Utilisateur:Benoît Prieur/French_pronunciation")
 page.text = result
 page.save("done")	
