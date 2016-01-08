@@ -12,6 +12,7 @@ import math
 
 EXTENSION = ".ogg"
 PREFIXE = "File:Fr-"
+PARIS = "Paris--"
 
 siteWiktionary = pywikibot.Site(u'fr', u'wiktionary')
 siteWiktionary.login()
@@ -37,26 +38,26 @@ def TraitementRecursif(nomCategorieSuperieure, resultat):
 		ready = True
 		
 		titre = item.title()
-		#print (titre)
+		titreBis = titre.replace(PARIS, "")
 		
 		# Contrôle de l'extension
-		ext = titre.find(EXTENSION) 
+		ext = titreBis.find(EXTENSION) 
 		if ext < 0: 
 			ready = False	
 
 		# Contrôle du préfixe
-		pref = titre.find(PREFIXE)
+		pref = titreBis.find(PREFIXE)
 		if pref != 0:
 			ready = False
 
 		# On ne traite pas les cas à plusieurs "-"
-		num = titre.count('-')
+		num = titreBis.count('-')
 		if num != 1:
 			ready = False
 
 		if ready == True:
 
-			mot = titre[len(PREFIXE):ext]
+			mot = titreBis[len(PREFIXE):ext]
 			
 			wikt = pywikibot.Page(siteWiktionary, mot)
 			if len(wikt.text) > 0: # Test de l'existence (lien rouge ou non)  
@@ -83,7 +84,7 @@ def TraitementRecursif(nomCategorieSuperieure, resultat):
 resultat = TraitementRecursif(nomCategorieSuperieure, resultat)
 page = pywikibot.Page(siteWiktionary, u"Utilisateur:Benoît Prieur/French_pronunciation")
 page.text = resultat
-page.save("MAJ")	
+page.save("MAJ : prise en compte des Paris--")	
 
 
 
