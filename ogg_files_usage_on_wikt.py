@@ -24,6 +24,8 @@ nomCategorieSuperieure = u"Category:French pronunciation"
 
 resultat = "La liste ci-dessous regroupe les fichiers .ogg existants sur WikiCommons mais non repris sur les articles du Wiktionnaire correspondant. Ils sont tous issus de l'arborescence [[:Commons:" + nomCategorieSuperieure + "]]. Si vous utilisez un fichier .ogg dans son article, merci de barrer la ligne correspondante ci-dessous.\n\n"
 
+listeMotsFaits = []
+
 #
 # TraitementRecursif
 #
@@ -50,11 +52,6 @@ def TraitementRecursif(nomCategorieSuperieure, resultat):
 		if pref != 0:
 			ready = False
 
-		# On ne traite pas les cas à plusieurs "-"
-		num = titreBis.count('-')
-		if num != 1:
-			ready = False
-
 		if ready == True:
 
 			mot = titreBis[len(PREFIXE):ext]
@@ -62,8 +59,12 @@ def TraitementRecursif(nomCategorieSuperieure, resultat):
 			wikt = pywikibot.Page(siteWiktionary, mot)
 			if len(wikt.text) > 0: # Test de l'existence (lien rouge ou non)  
 				if wikt.text.find(u"{{écouter|") < 0: # Recherche du modèle (on ne teste pas audio=)
-					print ("non-utilisation du modele : " + mot)
-					resultat += "# [[" + mot + "]] : " + "[[:Commons:" + titre + "|" + titre + "]]" + "\n" 
+					try:
+    						val=listeMotsFaits.index(mot)
+					except ValueError:
+   						listeMotsFaits.append(mot)
+						print ("***** NON UTILISATION DU MODELE ***** : " + mot)
+						resultat += "# [[" + mot + "]] : " + "[[:Commons:" + titre + "|" + titre + "]]" + "\n" 
 				else:
 					print ("modele deja en place : " + mot)
 			else: 
