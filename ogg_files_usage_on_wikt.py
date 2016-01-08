@@ -10,9 +10,10 @@ import pagegenerators
 import re
 import math
 
-EXTENSION = ".ogg"
-PREFIXE = "File:Fr-"
-PARIS = "Paris--"
+EXTENSION = u".ogg"
+PREFIX = u"File:Fr-"
+PARIS = u"Paris--"
+TEMPLATE = u"{{écouter|"
 
 siteWiktionary = pywikibot.Site(u'fr', u'wiktionary')
 siteWiktionary.login()
@@ -20,72 +21,76 @@ siteWiktionary.login()
 siteCommons = pywikibot.Site(u'commons', u'commons')
 siteCommons.login()
 
-nomCategorieSuperieure = u"Category:French pronunciation"
+topCategoryName = u"Category:French pronunciation"
 
-resultat = "La liste ci-dessous regroupe les fichiers .ogg existants sur WikiCommons mais non repris sur les articles du Wiktionnaire correspondant. Ils sont tous issus de l'arborescence [[:Commons:" + nomCategorieSuperieure + "]]. Si vous utilisez un fichier .ogg dans son article, merci de barrer la ligne correspondante ci-dessous.\n\n"
+result = u"La liste ci-dessous regroupe les fichiers .ogg existants sur WikiCommons mais non repris sur les articles du Wiktionnaire correspondant. Ils sont tous issus de l'arborescence [[:Commons:" + topCategoryName + "]]. Si vous utilisez un fichier .ogg dans son article, merci de barrer la ligne correspondante ci-dessous.\n\n"
 
-listeMotsFaits = []
+wordsDone = []
 
 #
-# TraitementRecursif
+# recursiveMethod
 #
-def TraitementRecursif(nomCategorieSuperieure, resultat):
+def recursiveMethod(topCategoryName, result):
 
-	categorie = pywikibot.Category(siteCommons, nomCategorieSuperieure)
-	print "Categorie en cours de traitement..." + nomCategorieSuperieure
+	category = pywikibot.Category(siteCommons, topCategoryName)
+	print "this category is analysed..." + topCategoryName
 	
-	items = pagegenerators.CategorizedPageGenerator(categorie, recurse=False)
+	items = pagegenerators.CategorizedPageGenerator(category, recurse=False)
 	for item in items:
 			
 		ready = True
 		
-		titre = item.title()
-		titreBis = titre.replace(PARIS, "")
+		title = item.title()
+		titleBis = title.replace(PARIS, "")
 		
-		# Contrôle de l'extension
-		ext = titreBis.find(EXTENSION) 
+		# extension control
+		ext = titleBis.find(EXTENSION) 
 		if ext < 0: 
 			ready = False	
 
-		# Contrôle du préfixe
-		pref = titreBis.find(PREFIXE)
+		# prefix control
+		pref = titleBis.find(PREFIX)
 		if pref != 0:
 			ready = False
 
 		if ready == True:
 
-			mot = titreBis[len(PREFIXE):ext]
+			word = titleBis[len(PREFIX):ext]
 			
-			wikt = pywikibot.Page(siteWiktionary, mot)
-			if len(wikt.text) > 0: # Test de l'existence (lien rouge ou non)  
-				if wikt.text.find(u"{{écouter|") < 0: # Recherche du modèle (on ne teste pas audio=)
+			wikt = pywikibot.Page(siteWiktionary, word)
+
+			# existence test of the correspondent article (red link or not)
+			if len(wikt.text) > 0:   
+
+				# test if the template is already used or not ("audio=" should be tested here => improvement)
+				if wikt.text.find(TEMPLATE) < 0: 
 					try:
-    						val=listeMotsFaits.index(mot)
+    						val=wordsDone.index(word)
 					except ValueError:
-   						listeMotsFaits.append(mot)
-						print ("***** NON UTILISATION DU MODELE ***** : " + mot)
-						resultat += "# [[" + mot + "]] : " + "[[:Commons:" + titre + "|" + titre + "]]" + "\n" 
+   						wordsDone.append(word)
+						print ("***** template is non used ***** : " + word)
+						result += "# [[" + word + "]] : " + "[[:Commons:" + title + "|" + title + "]]" + "\n" 
 				else:
-					print ("modele deja en place : " + mot)
+					print ("template already used : " + word)
 			else: 
-				print ("l'article n'existe pas : " + mot)
+				print ("this article does not exist on fr.wiktionary : " + word)
 		else:
-			print ("on ignore ce fichier : " + titre)
+			print ("we ignore this file : " + title)
 
-	categories = pagegenerators.SubCategoriesPageGenerator(categorie, recurse=False)
+	categories = pagegenerators.SubCategoriesPageGenerator(category, recurse=False)
 	for cat in categories:
-		resultat = TraitementRecursif(cat.title(), resultat)		
+		result = recursiveMethod(cat.title(), result)		
 
-	return resultat	
+	return result	
 	
 #
 # Principal
 #
 
-resultat = TraitementRecursif(nomCategorieSuperieure, resultat)
+result = recursiveMethod(topCategoryName, result)
 page = pywikibot.Page(siteWiktionary, u"Utilisateur:Benoît Prieur/French_pronunciation")
-page.text = resultat
-page.save("MAJ : prise en compte des Paris--")	
+page.text = result
+page.save("done")	
 
 
 
