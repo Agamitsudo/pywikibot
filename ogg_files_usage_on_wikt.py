@@ -23,7 +23,7 @@ siteCommons.login()
 
 topCategoryName = u"Category:French pronunciation"
 
-result = u"La liste ci-dessous regroupe les fichiers .ogg existants sur WikiCommons mais non repris sur les articles du Wiktionnaire correspondants. Ils sont tous issus de l'arborescence [[:Commons:" + topCategoryName + "]]. Si vous utilisez un fichier .ogg dans son article, merci de barrer la ligne correspondante ci-dessous.\n\n"
+result = u"La liste ci-dessous regroupe les fichiers .ogg existants sur WikiCommons mais non repris sur les articles du Wiktionnaire correspondants. Ils sont tous issus de l'arborescence [[:Commons:" + topCategoryName + "]]. Si vous utilisez un fichier .ogg dans son article, merci de supprimer la ligne correspondante ci-dessous.\n\n"
 
 wordsDone = []
 

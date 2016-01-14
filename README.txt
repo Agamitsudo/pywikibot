@@ -4,5 +4,5 @@ Here scripts based on pywikibot used on wikipedia, wikicommons, wikidata, wiktio
 ** https://fr.wiktionary.org/w/index.php?title=Utilisateur:Beno%C3%AEt_Prieur/French_pronunciation&oldid=21007070
 
 * diagram_creationdate_wikt.py: generates a diagram representing number of creation of thesaurus in French on fr.wiktionary since 2004 (January 2016)
-** 
+** https://fr.wiktionary.org/w/index.php?title=Utilisateur:Benoît_Prieur/Thésaurus_en_français&oldid=21017991
 

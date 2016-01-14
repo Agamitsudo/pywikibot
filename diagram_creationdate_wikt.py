@@ -41,7 +41,7 @@ def mainMethod(topCategoryName):
 		else:
 			new_dict[key] = new_dict[key] + 1;	
 	
-	#https://fr.wiktionary.org/wiki/Module:Diagramme
+	#https://fr.wiktionary.org/wiki/Module:Diagramme (documentation)
 	diagram = u"{{ #invoke:Diagramme | histogramme | largeur = 1000 | hauteur = 550 \n| groupe 1 = "
 	values = u""
 	legends = u""
