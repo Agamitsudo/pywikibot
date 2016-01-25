@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
-# Usage of .ogg files on fr.wiktionary.py
+# Diagrams for thesaurus fr.wiktionary
 
 import sys
+
+sys.path.insert(0, "/home/benoit/Documents/pywikibot-core/core")
 import pywikibot
 
 sys.path.insert(0, "/home/benoit/Documents/pywikibot-core/core/pywikibot")
-
 import pagegenerators
 import re
 import math
+import time
 	     
 siteWiktionary = pywikibot.Site(u'fr', u'wiktionary')
 siteWiktionary.login()

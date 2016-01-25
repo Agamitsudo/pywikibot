@@ -2,13 +2,15 @@
 # Usage of .ogg files on fr.wiktionary.py
 
 import sys
+
+sys.path.insert(0, "/home/benoit/Documents/pywikibot-core/core")
 import pywikibot
 
 sys.path.insert(0, "/home/benoit/Documents/pywikibot-core/core/pywikibot")
-
 import pagegenerators
 import re
 import math
+import time
 
 EXTENSION = u".ogg"
 PREFIX = u"File:Fr-"
@@ -23,7 +25,7 @@ siteCommons.login()
 
 topCategoryName = u"Category:French pronunciation"
 
-result = u"La liste ci-dessous regroupe les fichiers .ogg existants sur WikiCommons mais non repris sur les articles du Wiktionnaire correspondants. Ils sont tous issus de l'arborescence [[:Commons:" + topCategoryName + "]]. Si vous utilisez un fichier .ogg dans son article, merci de supprimer la ligne correspondante ci-dessous.\n\n"
+result = u"La liste ci-dessous regroupe les fichiers .ogg existants sur WikiCommons mais non repris sur les articles du Wiktionnaire correspondants. Ils sont tous issus de l'arborescence [[:Commons:" + topCategoryName + "]]. Si vous utilisez un fichier .ogg dans son article, merci de barrer la ligne correspondante ci-dessous.\n\n"
 
 wordsDone = []
 
