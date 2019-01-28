@@ -54,12 +54,12 @@ def mainMethod(topCategoryName):
 	sumCumulative = 0
 	legends = u""
 
-	for y in range(2004, 2019):
+	for y in range(2004, 2020):
 		for m in range (1, 13):
 
 			k = str(y) + "-" + str(m)
 			
-			if m > 1 and y == 2018:
+			if m > 1 and y == 2019:
 				sumCumulative = 0
 
 			if new_dict.get(k) == None:
@@ -73,7 +73,7 @@ def mainMethod(topCategoryName):
 			if m == 1:			
 				legends = legends + str(y)			
 			
-			if m != 12 or y != 2018:
+			if m != 12 or y != 2019:
 				values += ":"
 				valuesCumulative += ":"
 				legends += ":"
