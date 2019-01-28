@@ -87,6 +87,6 @@ def mainMethod(topCategoryName):
 #
 
 result = mainMethod(topCategoryName)
-page = pywikibot.Page(siteWiktionary, u"Utilisateur:Benoît Prieur/" + "2018_" + simpleName)
+page = pywikibot.Page(siteWiktionary, u"Utilisateur:Benoît Prieur/" + "2019_" + simpleName)
 page.text = result
 page.save("done")
