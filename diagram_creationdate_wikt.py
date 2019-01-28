@@ -1,17 +1,19 @@
 # -*- coding: utf-8 -*-
-# Diagrams for thesaurus fr.wiktionary
 
 import sys
-
-sys.path.insert(0, "/home/benoit/Documents/pywikibot-core/core")
+sys.path.insert(0, "/home/benoit/Documents/Projets Python Commons/core")
 import pywikibot
+from pywikibot import pagegenerators
+from dateutil import parser
 
-sys.path.insert(0, "/home/benoit/Documents/pywikibot-core/core/pywikibot")
-import pagegenerators
 import re
 import math
 import time
 	     
+import pywikibot
+from pywikibot import pagegenerators
+from dateutil import parser
+
 siteWiktionary = pywikibot.Site(u'fr', u'wiktionary')
 siteWiktionary.login()
 
@@ -52,12 +54,12 @@ def mainMethod(topCategoryName):
 	sumCumulative = 0
 	legends = u""
 
-	for y in range(2004, 2017):
+	for y in range(2004, 2019):
 		for m in range (1, 13):
 
 			k = str(y) + "-" + str(m)
 			
-			if m > 1 and y == 2016:
+			if m > 1 and y == 2018:
 				sumCumulative = 0
 
 			if new_dict.get(k) == None:
@@ -71,7 +73,7 @@ def mainMethod(topCategoryName):
 			if m == 1:			
 				legends = legends + str(y)			
 			
-			if m != 12 or y != 2016:
+			if m != 12 or y != 2018:
 				values += ":"
 				valuesCumulative += ":"
 				legends += ":"
@@ -85,9 +87,6 @@ def mainMethod(topCategoryName):
 #
 
 result = mainMethod(topCategoryName)
-page = pywikibot.Page(siteWiktionary, u"Utilisateur:Benoît Prieur/" + simpleName)
+page = pywikibot.Page(siteWiktionary, u"Utilisateur:Benoît Prieur/" + "2018_" + simpleName)
 page.text = result
-page.save("done")	
-
-
-
+page.save("done")
