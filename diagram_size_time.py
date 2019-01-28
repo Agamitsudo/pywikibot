@@ -32,7 +32,7 @@ def mainMethod(topCategoryName):
 	#
 	# ci-dessous on met à zéro le dictionnaire de "2004"-1 jusqu'à "2016-12"
 	#
-	for yg in range(2004, 2017):
+	for yg in range(2004, 2019):
 		for mg in range (1, 13):
 
 			kg = str(yg) + "-" + str(mg)
@@ -63,7 +63,7 @@ def mainMethod(topCategoryName):
 		#
 		# ci-dessous on met pour chaque mois la valeur de fin de mois ou celle du mois précédent
 		#
-		for y in range(2004, 2017):
+		for y in range(2004, 2019):
 			for m in range (1, 13):
 
 				k = str(y) + "-" + str(m)
@@ -82,7 +82,7 @@ def mainMethod(topCategoryName):
 
 					local_result_dict[k] = last	
 
-		for ygr in range(2004, 2017):
+		for ygr in range(2004, 2019):
 			for mgr in range (1, 13):
 				kgr = str(ygr) + "-" + str(mgr)
 				global_result_dict[kgr] += local_result_dict[kgr]
@@ -93,11 +93,11 @@ def mainMethod(topCategoryName):
 	#
 	# ci-dessous on cumule les valeurs pour l'ensemble des thésaurus
 	#
-	for yf in range(2004, 2017):
+	for yf in range(2004, 2019):
 		for mf in range (1, 13):
 
 			# ici on "s'arrête" à janvier 2016 : à décaler selon la date de lancement de script
-			if yf == 2016 and mf > 1:
+			if yf == 2018 and mf > 1:
 				values += "0"
 			else:
 				kf = str(yf) + "-" + str(mf)
