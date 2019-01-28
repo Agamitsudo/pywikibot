@@ -3,10 +3,10 @@
 
 import sys
 
-sys.path.insert(0, "/home/benoit/Documents/pywikibot-core/core")
+sys.path.insert(0, "/home/benoit/Documents/Projets Python Commons/core")
 import pywikibot
 
-sys.path.insert(0, "/home/benoit/Documents/pywikibot-core/core/pywikibot")
+sys.path.insert(0, "/home/benoit/Documents/Projets Python Commons/core/pywikibot")
 import pagegenerators
 import re
 import math
@@ -106,7 +106,7 @@ def mainMethod(topCategoryName):
 			if mf == 1:			
 				legends += str(yf)
 
-			if mf != 12 or yf != 2016:
+			if mf != 12 or yf != 2018:
 				values += ":"
 				legends += ":"
 
